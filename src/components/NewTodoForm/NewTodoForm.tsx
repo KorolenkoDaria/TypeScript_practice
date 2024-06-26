@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useAppDispatch } from "../../hook";
-import { addTodo } from "../../store/todoSlice";
+import { addTodo } from "../../store/todoOperations";
 
 const NewTodoForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -21,7 +21,7 @@ const NewTodoForm: React.FC = () => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (evt) => {
     evt.preventDefault();
-    dispatch(addTodo(value));
+    addTodo(value);
     setValue("");
   };
 

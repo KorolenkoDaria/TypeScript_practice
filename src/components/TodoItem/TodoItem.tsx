@@ -1,6 +1,6 @@
 import { ITodo } from "../../types/data";
 import { useAppDispatch } from "../../hook";
-import { toggleComplete, removeTodo } from "../../store/todoSlice";
+/* import { toggleComplete, removeTodo } from "../../store/todoSlice"; */
 
 interface ITodoItem extends ITodo {
   id: string;
@@ -17,10 +17,10 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
       <input
         type="checkbox"
         checked={completed}
-        onChange={() => dispatch(toggleComplete(id))}
+        /*  onChange={() => dispatch(toggleComplete(id))} */
       />
       <p>{title}</p>
-      <button onClick={() => dispatch(removeTodo(id))}>X</button>
+      <button /* onClick={() => dispatch(removeTodo(id))} */>X</button>
     </div>
   );
 };
