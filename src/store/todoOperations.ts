@@ -6,7 +6,7 @@ import { ITodo } from "../types/data";
 export const fetchTodos = createAsyncThunk<ITodo[], undefined, { rejectValue: string }>(
     'toods/fetchTodos',
     async function (_, { rejectWithValue }) {
-        const response = await fetch('https://jsonplaceholder.typicode.com/todos');
+        const response = await fetch('https://todos-backend-nestjs.onrender.com/todos');
         if (!response.ok) {
             return rejectWithValue('Server Error!')
         }
@@ -24,7 +24,7 @@ export const addTodo = createAsyncThunk<ITodo, string, { rejectValue: string }>(
             userId: 1,
             completed: false
         }
-        const response = await fetch('https://jsonplaceholder.typicode.com/todos', {
+        const response = await fetch('https://todos-backend-nestjs.onrender.com/todos', {
             method: 'POST',
             headers: {
                 "Content- Type": 'aplication/json'
@@ -43,7 +43,7 @@ export const toggleStatus = createAsyncThunk<ITodo, string, { rejectValue: strin
     'toods/toggleStatus',
     async function (id, { rejectWithValue }) {
 
-        const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+        const response = await fetch(`https://todos-backend-nestjs.onrender.com/todos/${id}`, {
             method: 'PATCH',
             headers: {
                 "Content-Type": 'aplication/json'
