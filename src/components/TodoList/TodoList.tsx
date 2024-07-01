@@ -6,11 +6,10 @@ const TodoList = () => {
   return (
     <div>
       {todos.map((todo) => (
-        <TodoItem key={todo.id} {...todo}></TodoItem>
+        <TodoItem key={todo._id} {...todo}></TodoItem>
       ))}
     </div>
   );
 };
 
 export default TodoList;
-/* test */

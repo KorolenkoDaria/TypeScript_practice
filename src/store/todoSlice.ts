@@ -1,7 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { nanoid } from "@reduxjs/toolkit";
+import { createSlice/* , PayloadAction  */ } from '@reduxjs/toolkit';
 import { ITodo } from "../types/data";
-import { fetchTodos, addTodo } from './todoOperations';
+import { fetchTodos, addTodo, toggleStatus, deleteTodo } from './todoOperations';
 
 type TodosState = {
     todos: ITodo[];
@@ -32,6 +31,16 @@ const todoSlice = createSlice({
             })
             .addCase(addTodo.fulfilled, (state, action) => {
                 state.todos.push(action.payload);
+            })
+            .addCase(toggleStatus.fulfilled, (state, action) => {
+                const index = state.todos.findIndex(todo => todo._id === action.payload._id);
+                if (index !== -1) {
+                    state.todos[index] = action.payload;
+                }
+            })
+            .addCase(deleteTodo.fulfilled, (state, action) => {
+                console.log(action.payload);
+                state.todos = state.todos.filter((todo) => todo._id !== action.payload._id)
             })
     },
     reducers: {

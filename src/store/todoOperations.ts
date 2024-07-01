@@ -1,12 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ITodo } from "../types/data";
 /* import { useAppDispatch } from "../hook"; */
-
+const REMOTE_DB = "https://todos-backend-nestjs.onrender.com";
+const LOCAL_DB = "http://localhost:5000";
 
 export const fetchTodos = createAsyncThunk<ITodo[], undefined, { rejectValue: string }>(
-    'toods/fetchTodos',
+    'todos/fetchTodos',
     async function (_, { rejectWithValue }) {
-        const response = await fetch('https://todos-backend-nestjs.onrender.com/todos');
+        const response = await fetch(`${LOCAL_DB}/todos`);
         if (!response.ok) {
             return rejectWithValue('Server Error!')
         }
@@ -16,43 +17,63 @@ export const fetchTodos = createAsyncThunk<ITodo[], undefined, { rejectValue: st
 );
 
 export const addTodo = createAsyncThunk<ITodo, string, { rejectValue: string }>(
-    'toods/addTodo',
+    'todos/addTodo',
     async function (text, { rejectWithValue }) {
-        console.log("add");
+
         const todo = {
             title: text,
-            userId: 1,
             completed: false
         }
-        const response = await fetch('https://todos-backend-nestjs.onrender.com/todos', {
+
+        const response = await fetch(`${LOCAL_DB}/todos`, {
             method: 'POST',
             headers: {
-                "Content- Type": 'aplication/json'
+                "Content-Type": 'application/json'
             },
             body: JSON.stringify(todo)
         });
+
         if (!response.ok) {
             return rejectWithValue('Can not add task. Server Error!')
         }
+
         const data = response.json();
         return data;
     }
 );
 
 export const toggleStatus = createAsyncThunk<ITodo, string, { rejectValue: string }>(
-    'toods/toggleStatus',
+    'todos/toggleStatus',
     async function (id, { rejectWithValue }) {
 
-        const response = await fetch(`https://todos-backend-nestjs.onrender.com/todos/${id}`, {
+        const response = await fetch(`${LOCAL_DB}/todos/${id}/toggle`, {
             method: 'PATCH',
             headers: {
-                "Content-Type": 'aplication/json'
+                "Content-Type": 'application/json'
             },
-            /* body: JSON.stringify() */
         });
         if (!response.ok) {
-            return rejectWithValue('Can not add task. Server Error!')
+            return rejectWithValue('Can not update task. Server Error!')
         }
+        const data = response.json();
+        return data;
+    }
+)
+
+export const deleteTodo = createAsyncThunk<ITodo, string, { rejectValue: string }>(
+    'todos/deleteTodo',
+    async function (id, { rejectWithValue }) {
+        const response = await fetch(`${LOCAL_DB}/todos/${id}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": 'application/json'
+            },
+        });
+
+        if (!response.ok) {
+            return rejectWithValue('Can not delete task. Server Error!')
+        }
+
         const data = response.json();
         return data;
     }

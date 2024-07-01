@@ -21,7 +21,7 @@ const NewTodoForm: React.FC = () => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (evt) => {
     evt.preventDefault();
-    addTodo(value);
+    dispatch(addTodo(value));
     setValue("");
   };
 
