@@ -78,3 +78,23 @@ export const deleteTodo = createAsyncThunk<ITodo, string, { rejectValue: string 
         return data;
     }
 )
+
+/* export const updateTodo = createAsyncThunk<ITodo, { rejectValue: string }>(
+    'todos/updateTodo',
+    async function (data, { rejectWithValue }) {
+        const { id, title } = data
+        const response = await fetch(`${LOCAL_DB}/todos/${id}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": 'application/json'
+            },
+        });
+
+        if (!response.ok) {
+            return rejectWithValue('Can not delete task. Server Error!')
+        }
+
+        const data = response.json();
+        return data;
+    }
+) */

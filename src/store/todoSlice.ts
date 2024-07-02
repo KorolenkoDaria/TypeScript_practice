@@ -44,22 +44,6 @@ const todoSlice = createSlice({
             })
     },
     reducers: {
-        /* addTodo(state, action: PayloadAction<string>) {
-            state.todos.push({
-                id: nanoid(),
-                title: action.payload,
-                completed: false,
-            })
-        },
-        toggleComplete(state, action: PayloadAction<string>) {
-            const toggledTodo = state.todos.find(todo => todo.id === action.payload);
-            if (toggledTodo) {
-                toggledTodo.completed = !toggledTodo.completed;
-            }
-        },
-        removeTodo(state, action: PayloadAction<string>) {
-            state.todos = state.todos.filter((todo) => todo.id !== action.payload)
-        } */
     }
 
 });
