@@ -79,15 +79,16 @@ export const deleteTodo = createAsyncThunk<ITodo, string, { rejectValue: string 
     }
 )
 
-/* export const updateTodo = createAsyncThunk<ITodo, { rejectValue: string }>(
+export const updateTodo = createAsyncThunk<ITodo, { id: string, title: string }, { rejectValue: string }>(
     'todos/updateTodo',
-    async function (data, { rejectWithValue }) {
-        const { id, title } = data
+    async function (updetedData, { rejectWithValue }) {
+        const { id, title } = updetedData
         const response = await fetch(`${LOCAL_DB}/todos/${id}`, {
-            method: 'DELETE',
+            method: 'PATCH',
             headers: {
                 "Content-Type": 'application/json'
             },
+            body: JSON.stringify(title)
         });
 
         if (!response.ok) {
@@ -97,4 +98,4 @@ export const deleteTodo = createAsyncThunk<ITodo, string, { rejectValue: string 
         const data = response.json();
         return data;
     }
-) */
+) 

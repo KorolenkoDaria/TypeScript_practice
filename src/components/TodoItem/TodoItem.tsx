@@ -4,7 +4,11 @@ import { FiSave } from "react-icons/fi";
 import { ITodo } from "../../types/data";
 import { useAppDispatch } from "../../hook";
 import { useState } from "react";
-import { toggleStatus, deleteTodo } from "../../store/todoOperations";
+import {
+  toggleStatus,
+  deleteTodo,
+  updateTodo,
+} from "../../store/todoOperations";
 interface ITodoItem extends ITodo {
   _id: string;
   title: string;
@@ -15,10 +19,17 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
   const dispatch = useAppDispatch();
   const { _id, title, completed } = item;
   const [isEditing, setIsEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState("");
 
   const handleEdit = () => {
     setIsEditing(true);
   };
+
+  const handleSave = () => {
+    setIsEditing(false);
+    dispatch(updateTodo({ id: _id, title: editTitle }));
+  };
+
   return (
     <div>
       <input
@@ -27,15 +38,20 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
         onChange={() => dispatch(toggleStatus(_id))}
       />
       {isEditing ? (
-        <input type="text" defaultValue={title} />
+        <input type="text" defaultValue={editTitle} />
       ) : (
         <input type="text" defaultValue={title} readOnly disabled />
       )}
 
       {isEditing ? (
-        <button>
-          <FiSave />
-        </button>
+        <div>
+          <button onClick={handleSave}>
+            <FiSave />
+          </button>
+          <button>
+            <MdCancel />
+          </button>
+        </div>
       ) : (
         <button onClick={handleEdit}>
           <RiEdit2Line />
