@@ -28,7 +28,6 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
   const handleSave = () => {
     setIsEditing(false);
     const data = { id: _id, editTitle };
-    console.log(data);
     dispatch(updateTodo(data));
   };
 
@@ -36,6 +35,18 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
     setEditTitle(e.target.value);
   };
 
+  const handleOnKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (
+    evt
+  ) => {
+    if (evt.key === "Enter") {
+      setIsEditing(false);
+      const data = { id: _id, editTitle };
+      dispatch(updateTodo(data));
+    }
+  };
+  const handleCancel = () => {
+    setIsEditing(false);
+  };
   return (
     <div>
       <input
@@ -44,7 +55,12 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
         onChange={() => dispatch(toggleStatus(_id))}
       />
       {isEditing ? (
-        <input type="text" value={editTitle} onChange={handleChangeTitle} />
+        <input
+          type="text"
+          value={editTitle}
+          onChange={handleChangeTitle}
+          onKeyDown={handleOnKeyDown}
+        />
       ) : (
         <input type="text" value={title} readOnly disabled />
       )}
@@ -54,7 +70,7 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
           <button onClick={handleSave}>
             <FiSave />
           </button>
-          <button>
+          <button onClick={handleCancel}>
             <MdCancel />
           </button>
         </div>

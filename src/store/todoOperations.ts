@@ -82,7 +82,9 @@ export const deleteTodo = createAsyncThunk<ITodo, string, { rejectValue: string 
 export const updateTodo = createAsyncThunk<ITodo, { id: string, editTitle: string }, { rejectValue: string }>(
     'todos/updateTodo',
     async function (updetedData, { rejectWithValue }) {
-        const { id, editTitle } = updetedData
+        const date = new Date;
+        console.log(date);
+        const { id, editTitle } = updetedData;
         const response = await fetch(`${LOCAL_DB}/todos/${id}`, {
             method: 'PATCH',
             headers: {
