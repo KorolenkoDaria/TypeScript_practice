@@ -19,7 +19,7 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
   const dispatch = useAppDispatch();
   const { _id, title, completed } = item;
   const [isEditing, setIsEditing] = useState(false);
-  const [editTitle, setEditTitle] = useState("");
+  const [editTitle, setEditTitle] = useState(title);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -27,7 +27,13 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
 
   const handleSave = () => {
     setIsEditing(false);
-    dispatch(updateTodo({ id: _id, title: editTitle }));
+    const data = { id: _id, editTitle };
+    console.log(data);
+    dispatch(updateTodo(data));
+  };
+
+  const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditTitle(e.target.value);
   };
 
   return (
@@ -38,9 +44,9 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
         onChange={() => dispatch(toggleStatus(_id))}
       />
       {isEditing ? (
-        <input type="text" defaultValue={editTitle} />
+        <input type="text" value={editTitle} onChange={handleChangeTitle} />
       ) : (
-        <input type="text" defaultValue={title} readOnly disabled />
+        <input type="text" value={title} readOnly disabled />
       )}
 
       {isEditing ? (

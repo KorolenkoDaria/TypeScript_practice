@@ -79,22 +79,21 @@ export const deleteTodo = createAsyncThunk<ITodo, string, { rejectValue: string 
     }
 )
 
-export const updateTodo = createAsyncThunk<ITodo, { id: string, title: string }, { rejectValue: string }>(
+export const updateTodo = createAsyncThunk<ITodo, { id: string, editTitle: string }, { rejectValue: string }>(
     'todos/updateTodo',
     async function (updetedData, { rejectWithValue }) {
-        const { id, title } = updetedData
+        const { id, editTitle } = updetedData
         const response = await fetch(`${LOCAL_DB}/todos/${id}`, {
             method: 'PATCH',
             headers: {
                 "Content-Type": 'application/json'
             },
-            body: JSON.stringify(title)
+            body: JSON.stringify({ editTitle })
         });
 
         if (!response.ok) {
-            return rejectWithValue('Can not delete task. Server Error!')
+            return rejectWithValue('Can not update task. Server Error!')
         }
-
         const data = response.json();
         return data;
     }
