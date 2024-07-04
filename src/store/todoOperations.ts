@@ -19,10 +19,16 @@ export const fetchTodos = createAsyncThunk<ITodo[], undefined, { rejectValue: st
 export const addTodo = createAsyncThunk<ITodo, string, { rejectValue: string }>(
     'todos/addTodo',
     async function (text, { rejectWithValue }) {
+        const addedDate = new Date().toLocaleDateString('en-GB', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        }).replace(/\//g, '-');
 
         const todo = {
             title: text,
-            completed: false
+            completed: false,
+            addedDate
         }
 
         const response = await fetch(`${LOCAL_DB}/todos`, {
@@ -82,8 +88,7 @@ export const deleteTodo = createAsyncThunk<ITodo, string, { rejectValue: string 
 export const updateTodo = createAsyncThunk<ITodo, { id: string, editTitle: string }, { rejectValue: string }>(
     'todos/updateTodo',
     async function (updetedData, { rejectWithValue }) {
-        const date = new Date;
-        console.log(date);
+
         const { id, editTitle } = updetedData;
         const response = await fetch(`${LOCAL_DB}/todos/${id}`, {
             method: 'PATCH',
