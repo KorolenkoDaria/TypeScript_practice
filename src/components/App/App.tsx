@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppDispatch } from "../../hook";
-import { fetchTodos } from "../../store/todoOperations";
+import { fetchTodos } from "../../store/todos/todoOperations";
 import TodoList from "../TodoList/TodoList";
 import NewTodoForm from "../NewTodoForm/NewTodoForm";
 

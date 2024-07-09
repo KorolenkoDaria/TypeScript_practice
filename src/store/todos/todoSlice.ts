@@ -1,5 +1,5 @@
 import { createSlice/* , PayloadAction  */ } from '@reduxjs/toolkit';
-import { ITodo } from "../types/data";
+import { ITodo } from "../../types/data";
 import { fetchTodos, addTodo, toggleStatus, deleteTodo, updateTodo } from './todoOperations';
 
 type TodosState = {

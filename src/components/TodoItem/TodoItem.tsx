@@ -8,7 +8,7 @@ import {
   toggleStatus,
   deleteTodo,
   updateTodo,
-} from "../../store/todoOperations";
+} from "../../store/todos/todoOperations";
 interface ITodoItem extends ITodo {
   _id: string;
   title: string;

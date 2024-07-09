@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ITodo } from "../types/data";
+import { ITodo } from "../../types/data";
 /* import { useAppDispatch } from "../hook"; */
 const REMOTE_DB = "https://todos-backend-nestjs.onrender.com";
 const LOCAL_DB = "http://localhost:5000";

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useAppDispatch } from "../../hook";
-import { addTodo } from "../../store/todoOperations";
+import { addTodo } from "../../store/todos/todoOperations";
 
 const NewTodoForm: React.FC = () => {
   const dispatch = useAppDispatch();
