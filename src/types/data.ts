@@ -3,3 +3,9 @@ export interface ITodo {
     title: string;
     completed: boolean;
 }
+
+export interface IUser {
+    email: string;
+    password: string;
+    
+}
