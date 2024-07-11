@@ -13,11 +13,19 @@ const SignUpForm: React.FC = () => {
     const repeatPassword = form.elements.namedItem(
       "repeatPassword"
     ) as HTMLInputElement;
+
+    console.log(email.value, password.value, repeatPassword.value);
+
+    if (password.value.trim() !== repeatPassword.value.trim()) {
+      return alert(
+        "Password mismatch. Please make sure you enter the same passwords!"
+      );
+    }
     dispatch(
-      signUp(/* {
+      signUp({
         email: email.value.trim(),
         password: password.value.trim(),
-      } */)
+      })
     );
   };
   return (
