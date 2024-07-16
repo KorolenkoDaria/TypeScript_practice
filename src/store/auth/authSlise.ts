@@ -1,7 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { signUp } from "./authOperations";
+import type { RootState } from "../index";
 
-type AuthState = {
+export const selectIsLoggedIn = (state: RootState): boolean => state.auth.isLoggedIn;
+
+export type AuthState = {
     user: {
         name: string | null,
         email: string | null,
@@ -36,8 +39,11 @@ const authSlise = createSlice({
             .addCase(signUp.pending, (state) => {
                 state.loading = true
             })
-            .addCase(signUp.fulfilled, (state, action) => {
-                state.loading = false
+            .addCase(signUp.fulfilled, (state, { payload }) => {
+                state.loading = false;
+                state.token = payload.token;
+                state.user.email = payload.email;
+                state.isLoggedIn = true;
             })
     },
     reducers: {

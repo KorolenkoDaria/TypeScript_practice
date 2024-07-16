@@ -1,4 +1,6 @@
-const SignIn = () => {
+import React from "react";
+
+const SignIn: React.FC = () => {
   return (
     <form action="">
       <input type="text" placeholder="name" />
