@@ -44,6 +44,7 @@ const authSlise = createSlice({
                 state.token = payload.token;
                 state.user.email = payload.email;
                 state.isLoggedIn = true;
+                localStorage.setItem('token', payload.token)
             })
     },
     reducers: {

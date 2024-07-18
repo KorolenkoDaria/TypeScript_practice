@@ -30,11 +30,13 @@ export const addTodo = createAsyncThunk<ITodo, string, { rejectValue: string }>(
             completed: false,
             addedDate
         }
+        const token = localStorage.getItem('token')
 
         const response = await fetch(`${LOCAL_DB}/todos`, {
             method: 'POST',
             headers: {
-                "Content-Type": 'application/json'
+                "Content-Type": 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(todo)
         });
