@@ -3,11 +3,18 @@ import { ITodo } from "../../types/data";
 
 /* const REMOTE_DB = "https://todos-backend-nestjs.onrender.com"; */
 const LOCAL_DB = "http://localhost:5000";
+const token = localStorage.getItem('token')
 
 export const fetchTodos = createAsyncThunk<ITodo[], undefined, { rejectValue: string }>(
     'todos/fetchTodos',
     async function (_, { rejectWithValue }) {
-        const response = await fetch(`${LOCAL_DB}/todos`);
+        const response = await fetch(`${LOCAL_DB}/todos`, {
+            method: 'GET',
+            headers: {
+                "Content-Type": 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        });
         if (!response.ok) {
             return rejectWithValue('Server Error!')
         }
@@ -30,7 +37,7 @@ export const addTodo = createAsyncThunk<ITodo, string, { rejectValue: string }>(
             completed: false,
             addedDate
         }
-        const token = localStorage.getItem('token')
+
 
         const response = await fetch(`${LOCAL_DB}/todos`, {
             method: 'POST',
@@ -57,7 +64,8 @@ export const toggleStatus = createAsyncThunk<ITodo, string, { rejectValue: strin
         const response = await fetch(`${LOCAL_DB}/todos/${id}/toggle`, {
             method: 'PATCH',
             headers: {
-                "Content-Type": 'application/json'
+                "Content-Type": 'application/json',
+                'Authorization': `Bearer ${token}`
             },
         });
         if (!response.ok) {
@@ -74,7 +82,8 @@ export const deleteTodo = createAsyncThunk<ITodo, string, { rejectValue: string 
         const response = await fetch(`${LOCAL_DB}/todos/${id}`, {
             method: 'DELETE',
             headers: {
-                "Content-Type": 'application/json'
+                "Content-Type": 'application/json',
+                'Authorization': `Bearer ${token}`
             },
         });
 
@@ -95,7 +104,8 @@ export const updateTodo = createAsyncThunk<ITodo, { id: string, editTitle: strin
         const response = await fetch(`${LOCAL_DB}/todos/${id}`, {
             method: 'PATCH',
             headers: {
-                "Content-Type": 'application/json'
+                "Content-Type": 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({ editTitle })
         });
@@ -106,4 +116,6 @@ export const updateTodo = createAsyncThunk<ITodo, { id: string, editTitle: strin
         const data = response.json();
         return data;
     }
-) 
+)
+
+
