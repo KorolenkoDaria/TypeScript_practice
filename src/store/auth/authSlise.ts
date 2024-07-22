@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { signUp } from "./authOperations";
+import { signUp, signIn, logOut } from "./authOperations";
 import type { RootState } from "../index";
 
 export const selectIsLoggedIn = (state: RootState): boolean => state.auth.isLoggedIn;
@@ -44,6 +44,25 @@ const authSlise = createSlice({
                 state.token = payload.token;
                 state.user.email = payload.email;
                 state.isLoggedIn = true;
+                localStorage.setItem('token', payload.token)
+            })
+            .addCase(signIn.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(signIn.fulfilled, (state, { payload }) => {
+                state.loading = false;
+                state.token = payload.token;
+                state.user.email = payload.email;
+                state.isLoggedIn = true;
+                localStorage.setItem('token', payload.token)
+            })
+            .addCase(logOut.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(logOut.fulfilled, (state, { payload }) => {
+                state.loading = false;
+                state.token = null;
+                state.isLoggedIn = false;
                 localStorage.setItem('token', payload.token)
             })
     },

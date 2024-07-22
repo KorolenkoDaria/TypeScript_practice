@@ -21,13 +21,10 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        /*   path: "/react_typescript_todo", */
         element: (
-          <RestrictedRoute>
-            <Suspense fallback={<div>Loading...</div>}>
-              <Home />
-            </Suspense>
-          </RestrictedRoute>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Home />
+          </Suspense>
         ),
       },
       {

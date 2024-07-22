@@ -14,7 +14,6 @@ const RestrictedRoute: React.FC<RestrictedRouteProps> = ({
   redirectTo = "/react_typescript_todo/todos",
 }) => {
   const isLogged = useAppSelector((state) => state.auth.isLoggedIn);
-  console.log(isLogged);
   return isLogged ? <Navigate to={redirectTo} replace /> : <>{children}</>;
 };
 

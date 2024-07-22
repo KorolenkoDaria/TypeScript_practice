@@ -1,13 +1,7 @@
 import React from "react";
-
+import SignInForm from "../../components/SignInForm/SignInForm";
 const SignIn: React.FC = () => {
-  return (
-    <form action="">
-      <input type="text" placeholder="name" />
-      <input type="text" placeholder="password" />
-      <button type="submit">Sign in</button>
-    </form>
-  );
+  return <SignInForm />;
 };
 
 export default SignIn;

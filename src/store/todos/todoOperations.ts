@@ -3,11 +3,12 @@ import { ITodo } from "../../types/data";
 
 /* const REMOTE_DB = "https://todos-backend-nestjs.onrender.com"; */
 const LOCAL_DB = "http://localhost:5000";
-const token = localStorage.getItem('token')
+
 
 export const fetchTodos = createAsyncThunk<ITodo[], undefined, { rejectValue: string }>(
     'todos/fetchTodos',
     async function (_, { rejectWithValue }) {
+        const token = localStorage.getItem('token')
         const response = await fetch(`${LOCAL_DB}/todos`, {
             method: 'GET',
             headers: {
@@ -15,6 +16,7 @@ export const fetchTodos = createAsyncThunk<ITodo[], undefined, { rejectValue: st
                 'Authorization': `Bearer ${token}`
             },
         });
+
         if (!response.ok) {
             return rejectWithValue('Server Error!')
         }
@@ -26,6 +28,7 @@ export const fetchTodos = createAsyncThunk<ITodo[], undefined, { rejectValue: st
 export const addTodo = createAsyncThunk<ITodo, string, { rejectValue: string }>(
     'todos/addTodo',
     async function (text, { rejectWithValue }) {
+        const token = localStorage.getItem('token')
         const addedDate = new Date().toLocaleDateString('en-GB', {
             year: 'numeric',
             month: '2-digit',
@@ -37,7 +40,6 @@ export const addTodo = createAsyncThunk<ITodo, string, { rejectValue: string }>(
             completed: false,
             addedDate
         }
-
 
         const response = await fetch(`${LOCAL_DB}/todos`, {
             method: 'POST',
@@ -60,7 +62,7 @@ export const addTodo = createAsyncThunk<ITodo, string, { rejectValue: string }>(
 export const toggleStatus = createAsyncThunk<ITodo, string, { rejectValue: string }>(
     'todos/toggleStatus',
     async function (id, { rejectWithValue }) {
-
+        const token = localStorage.getItem('token')
         const response = await fetch(`${LOCAL_DB}/todos/${id}/toggle`, {
             method: 'PATCH',
             headers: {
@@ -79,6 +81,7 @@ export const toggleStatus = createAsyncThunk<ITodo, string, { rejectValue: strin
 export const deleteTodo = createAsyncThunk<ITodo, string, { rejectValue: string }>(
     'todos/deleteTodo',
     async function (id, { rejectWithValue }) {
+        const token = localStorage.getItem('token')
         const response = await fetch(`${LOCAL_DB}/todos/${id}`, {
             method: 'DELETE',
             headers: {
@@ -99,7 +102,7 @@ export const deleteTodo = createAsyncThunk<ITodo, string, { rejectValue: string 
 export const updateTodo = createAsyncThunk<ITodo, { id: string, editTitle: string }, { rejectValue: string }>(
     'todos/updateTodo',
     async function (updetedData, { rejectWithValue }) {
-
+        const token = localStorage.getItem('token')
         const { id, editTitle } = updetedData;
         const response = await fetch(`${LOCAL_DB}/todos/${id}`, {
             method: 'PATCH',

@@ -1,18 +1,8 @@
-import { useEffect } from "react";
-
-import { useAppDispatch } from "../../hook";
 import { useAppSelector } from "../../hook";
-import { fetchTodos } from "../../store/todos/todoOperations";
 import { Outlet, NavLink } from "react-router-dom";
 
 const App: React.FC = () => {
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(fetchTodos());
-  }, [dispatch]);
-
   const isLogged = useAppSelector((state) => state.auth.isLoggedIn);
-  console.log(isLogged);
   return (
     <div>
       <header>

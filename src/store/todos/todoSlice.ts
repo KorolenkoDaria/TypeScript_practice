@@ -24,6 +24,7 @@ const todoSlice = createSlice({
             })
             .addCase(fetchTodos.fulfilled, (state, action) => {
                 state.todos = action.payload;
+                console.log("action.payload", action.payload);
                 state.loading = false;
             })
             .addCase(addTodo.pending, (state) => {

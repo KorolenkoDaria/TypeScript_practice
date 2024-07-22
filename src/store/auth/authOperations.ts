@@ -10,6 +10,10 @@ interface UserData {
     password: string;
 }
 
+interface UserEmail {
+    email: string;
+}
+
 export const signUp = createAsyncThunk<IUser, UserData, { rejectValue: string }>(
     'auth/signUp',
     async function (userData, { rejectWithValue }) {
@@ -23,7 +27,43 @@ export const signUp = createAsyncThunk<IUser, UserData, { rejectValue: string }>
         if (!response.ok) {
             return rejectWithValue('Server Error!')
         }
-        const data = response.json();
+        const data = await response.json();
+        return data;
+    }
+);
+
+export const signIn = createAsyncThunk<IUser, UserData, { rejectValue: string }>(
+    'auth/signIn',
+    async function (userData, { rejectWithValue }) {
+        const response = await fetch(`${LOCAL_DB}/auth/signin`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify(userData)
+        });
+        if (!response.ok) {
+            return rejectWithValue('Server Error!')
+        }
+        const data = await response.json();
+        return data;
+    }
+);
+
+export const logOut = createAsyncThunk<IUser, UserEmail, { rejectValue: string }>(
+    'auth/logOut',
+    async function (email, { rejectWithValue }) {
+        const response = await fetch(`${LOCAL_DB}/auth/logout`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify(email)
+        });
+        if (!response.ok) {
+            return rejectWithValue('Server Error!')
+        }
+        const data = await response.json();
         return data;
     }
 );

@@ -1,5 +1,4 @@
 import { useAppDispatch } from "../../hook";
-
 import { signUp } from "../../store/auth/authOperations";
 
 const SignUpForm: React.FC = () => {
