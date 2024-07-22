@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { useAppDispatch } from "../../hook";
 import { addTodo } from "../../store/todos/todoOperations";
+import { useModal } from "../../context/ModalContext/ModalContext";
 
 const NewTodoForm: React.FC = () => {
   const dispatch = useAppDispatch();
-
   const [value, setValue] = useState("");
-
   const inputRef = useRef<HTMLInputElement>(null);
+  const { closeModal } = useModal();
 
   useEffect(() => {
     if (inputRef.current) {
@@ -23,6 +23,7 @@ const NewTodoForm: React.FC = () => {
     evt.preventDefault();
     dispatch(addTodo(value));
     setValue("");
+    closeModal();
   };
 
   const handleOnKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (
@@ -32,12 +33,13 @@ const NewTodoForm: React.FC = () => {
       evt.preventDefault();
       dispatch(addTodo(value));
       setValue("");
+      closeModal();
     }
   };
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="">Change your task</label>
+        <label htmlFor=""></label>
         <input
           type="text"
           name=""

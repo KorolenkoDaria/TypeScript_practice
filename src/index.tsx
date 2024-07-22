@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
+import { ModalProvider } from "./context/index";
 
 import App from "./components/App/App";
 import store from "./store/index";
@@ -64,7 +65,10 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <ModalProvider>
+        {" "}
+        <RouterProvider router={router} />{" "}
+      </ModalProvider>
     </Provider>
   </React.StrictMode>
 );
