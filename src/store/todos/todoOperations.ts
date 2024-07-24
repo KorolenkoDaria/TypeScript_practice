@@ -4,6 +4,10 @@ import { ITodo } from "../../types/data";
 /* const REMOTE_DB = "https://todos-backend-nestjs.onrender.com"; */
 const LOCAL_DB = "http://localhost:5000";
 
+interface TodoData {
+    title: string;
+    priority: string;
+}
 
 export const fetchTodos = createAsyncThunk<ITodo[], undefined, { rejectValue: string }>(
     'todos/fetchTodos',
@@ -25,9 +29,9 @@ export const fetchTodos = createAsyncThunk<ITodo[], undefined, { rejectValue: st
     }
 );
 
-export const addTodo = createAsyncThunk<ITodo, string, { rejectValue: string }>(
+export const addTodo = createAsyncThunk<ITodo, TodoData, { rejectValue: string }>(
     'todos/addTodo',
-    async function (text, { rejectWithValue }) {
+    async function (todoData, { rejectWithValue }) {
         const token = localStorage.getItem('token')
         const addedDate = new Date().toLocaleDateString('en-GB', {
             year: 'numeric',
@@ -36,7 +40,7 @@ export const addTodo = createAsyncThunk<ITodo, string, { rejectValue: string }>(
         }).replace(/\//g, '-');
 
         const todo = {
-            title: text,
+            ...todoData,
             completed: false,
             addedDate
         }
