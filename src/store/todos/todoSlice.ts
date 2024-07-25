@@ -1,6 +1,7 @@
 import { createSlice/* , PayloadAction  */ } from '@reduxjs/toolkit';
 import { ITodo } from "../../types/data";
 import { fetchTodos, addTodo, toggleStatus, deleteTodo, updateTodo } from './todoOperations';
+import priorities from "../../helpers/priorities";
 
 type TodosState = {
     todos: ITodo[];
@@ -24,14 +25,14 @@ const todoSlice = createSlice({
             })
             .addCase(fetchTodos.fulfilled, (state, action) => {
                 state.todos = action.payload;
-                console.log("action.payload", action.payload);
                 state.loading = false;
             })
             .addCase(addTodo.pending, (state) => {
                 state.error = null;
             })
-            .addCase(addTodo.fulfilled, (state, action) => {
-                state.todos.push(action.payload);
+            .addCase(addTodo.fulfilled, (state, { payload }) => {
+                payload.priority = priorities[Number(payload.priority)]
+                state.todos.push(payload);
             })
             .addCase(toggleStatus.fulfilled, (state, action) => {
                 const index = state.todos.findIndex(todo => todo._id === action.payload._id);

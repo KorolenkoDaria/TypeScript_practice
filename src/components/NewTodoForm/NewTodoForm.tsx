@@ -31,8 +31,6 @@ const NewTodoForm: React.FC = () => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (evt) => {
     evt.preventDefault();
-    console.log(evt.target);
-
     dispatch(addTodo(data));
     setDataTitle("");
     closeModal();

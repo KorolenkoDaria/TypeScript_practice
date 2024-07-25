@@ -11,7 +11,6 @@ const SignInForm: React.FC = () => {
     const email = form.elements.namedItem("email") as HTMLInputElement;
     const password = form.elements.namedItem("password") as HTMLInputElement;
 
-    console.log(email.value, password.value);
     dispatch(
       signIn({
         email: email.value.trim(),

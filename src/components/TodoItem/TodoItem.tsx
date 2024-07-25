@@ -13,11 +13,12 @@ interface ITodoItem extends ITodo {
   _id: string;
   title: string;
   completed: boolean;
+  priority: string;
 }
 
 const TodoItem: React.FC<ITodoItem> = (item) => {
   const dispatch = useAppDispatch();
-  const { _id, title, completed } = item;
+  const { _id, title, completed, priority } = item;
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(title);
 
@@ -64,7 +65,9 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
       ) : (
         <input type="text" value={title} readOnly disabled />
       )}
-
+      <div>
+        <p>priority: {priority}</p>
+      </div>
       {isEditing ? (
         <div>
           <button onClick={handleSave}>
