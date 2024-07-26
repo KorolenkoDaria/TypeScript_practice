@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { useAppDispatch } from "../../hook";
-import { addTodo } from "../../store/todos/todoOperations";
+import { addTodo, fetchTodos } from "../../store/todos/todoOperations";
 import { useModal } from "../../context/ModalContext/ModalContext";
+import { useSort } from "../../context/SortContext/SortContext";
 
 const NewTodoForm: React.FC = () => {
+  const { sortBy } = useSort();
   const dispatch = useAppDispatch();
   const [dataTitle, setDataTitle] = useState("");
   const [priority, setPriority] = useState("");
@@ -29,11 +31,16 @@ const NewTodoForm: React.FC = () => {
     setPriority(evt.target.value);
   };
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (evt) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (evt) => {
     evt.preventDefault();
-    dispatch(addTodo(data));
-    setDataTitle("");
-    closeModal();
+    try {
+      await dispatch(addTodo(data));
+      await dispatch(fetchTodos(sortBy)).unwrap();
+      setDataTitle("");
+      closeModal();
+    } catch (error) {
+      console.error("Failed to add todo:", error);
+    }
   };
 
   const handleOnKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (
@@ -42,6 +49,7 @@ const NewTodoForm: React.FC = () => {
     if (evt.key === "Enter") {
       evt.preventDefault();
       dispatch(addTodo(data));
+      dispatch(fetchTodos(sortBy));
       setDataTitle("");
       closeModal();
     }

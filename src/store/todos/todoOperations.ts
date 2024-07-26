@@ -9,16 +9,17 @@ interface TodoData {
     priority: string;
 }
 
-export const fetchTodos = createAsyncThunk<ITodo[], undefined, { rejectValue: string }>(
+export const fetchTodos = createAsyncThunk<ITodo[], string, { rejectValue: string }>(
     'todos/fetchTodos',
-    async function (_, { rejectWithValue }) {
+    async function (criteria, { rejectWithValue }) {
+
         const token = localStorage.getItem('token')
-        const response = await fetch(`${LOCAL_DB}/todos`, {
+        const response = await fetch(`${LOCAL_DB}/todos?criteria=${criteria}`, {
             method: 'GET',
             headers: {
                 "Content-Type": 'application/json',
                 'Authorization': `Bearer ${token}`
-            },
+            }
         });
 
         if (!response.ok) {

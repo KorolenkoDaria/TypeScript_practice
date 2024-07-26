@@ -31,8 +31,17 @@ const todoSlice = createSlice({
                 state.error = null;
             })
             .addCase(addTodo.fulfilled, (state, { payload }) => {
-                payload.priority = priorities[Number(payload.priority)]
-                state.todos.push(payload);
+                /* payload.priority = priorities[Number(payload.priority)]
+                state.todos.push(payload); */
+                /*       state.todos.sort(function (a, b) {
+                          if (a.priority > b.priority) {
+                              return 1;
+                          }
+                          if (a.priority < b.priority) {
+                              return -1;
+                          }
+                          return 0;
+                      }); */
             })
             .addCase(toggleStatus.fulfilled, (state, action) => {
                 const index = state.todos.findIndex(todo => todo._id === action.payload._id);

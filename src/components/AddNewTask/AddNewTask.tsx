@@ -3,7 +3,7 @@ import { IoMdAddCircle } from "react-icons/io";
 import { useModal } from "../../context";
 
 const AddNewTask: React.FC = () => {
-  const { isOpen, openModal, closeModal } = useModal();
+  const { openModal } = useModal();
   return (
     <div>
       <IoMdAddCircle />
