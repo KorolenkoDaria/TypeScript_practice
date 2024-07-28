@@ -1,7 +1,7 @@
 import { createSlice/* , PayloadAction  */ } from '@reduxjs/toolkit';
 import { ITodo } from "../../types/data";
 import { fetchTodos, addTodo, toggleStatus, deleteTodo, updateTodo } from './todoOperations';
-import priorities from "../../helpers/priorities";
+
 
 type TodosState = {
     todos: ITodo[];

@@ -14,13 +14,15 @@ interface ITodoItem extends ITodo {
   title: string;
   completed: boolean;
   priority: string;
+  updateDate: string;
 }
 
 const TodoItem: React.FC<ITodoItem> = (item) => {
   const dispatch = useAppDispatch();
-  const { _id, title, completed, priority } = item;
+  const { _id, title, completed, priority, updateDate } = item;
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(title);
+  const data = { id: _id, editTitle, priority };
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -28,7 +30,7 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
 
   const handleSave = () => {
     setIsEditing(false);
-    const data = { id: _id, editTitle };
+
     dispatch(updateTodo(data));
   };
 
@@ -41,7 +43,6 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
   ) => {
     if (evt.key === "Enter") {
       setIsEditing(false);
-      const data = { id: _id, editTitle };
       dispatch(updateTodo(data));
     }
   };
@@ -50,6 +51,7 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
   };
   return (
     <div>
+      <p>date added: {updateDate}</p>
       <input
         type="checkbox"
         checked={completed}
@@ -63,11 +65,14 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
           onKeyDown={handleOnKeyDown}
         />
       ) : (
-        <input type="text" value={title} readOnly disabled />
+        <>
+          <input type="text" value={title} readOnly disabled />
+          <div>
+            <p>priority: {priority}</p>
+          </div>
+        </>
       )}
-      <div>
-        <p>priority: {priority}</p>
-      </div>
+
       {isEditing ? (
         <div>
           <button onClick={handleSave}>

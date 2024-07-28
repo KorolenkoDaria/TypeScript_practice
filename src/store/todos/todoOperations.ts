@@ -34,7 +34,13 @@ export const addTodo = createAsyncThunk<ITodo, TodoData, { rejectValue: string }
     'todos/addTodo',
     async function (todoData, { rejectWithValue }) {
         const token = localStorage.getItem('token')
-        const addedDate = new Date().toLocaleDateString('en-GB', {
+        const addDate = new Date().toLocaleDateString('en-GB', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        }).replace(/\//g, '-');
+
+        const updateDate = new Date().toLocaleDateString('en-GB', {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit'
@@ -43,7 +49,8 @@ export const addTodo = createAsyncThunk<ITodo, TodoData, { rejectValue: string }
         const todo = {
             ...todoData,
             completed: false,
-            addedDate
+            addDate,
+            updateDate
         }
 
         const response = await fetch(`${LOCAL_DB}/todos`, {
@@ -104,18 +111,29 @@ export const deleteTodo = createAsyncThunk<ITodo, string, { rejectValue: string 
     }
 )
 
-export const updateTodo = createAsyncThunk<ITodo, { id: string, editTitle: string }, { rejectValue: string }>(
+export const updateTodo = createAsyncThunk<ITodo, { id: string, editTitle: string, priority: string }, { rejectValue: string }>(
     'todos/updateTodo',
     async function (updetedData, { rejectWithValue }) {
         const token = localStorage.getItem('token')
-        const { id, editTitle } = updetedData;
+        const { id, editTitle, priority } = updetedData;
+        const updateDate = new Date().toLocaleDateString('en-GB', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        }).replace(/\//g, '-');
+
+        const updatedData = {
+            editTitle,
+            updateDate,
+            priority
+        }
         const response = await fetch(`${LOCAL_DB}/todos/${id}`, {
             method: 'PATCH',
             headers: {
                 "Content-Type": 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ editTitle })
+            body: JSON.stringify(updatedData)
         });
 
         if (!response.ok) {
