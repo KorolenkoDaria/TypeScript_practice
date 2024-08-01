@@ -2,8 +2,8 @@
 import React, { createContext, useState, ReactNode, useContext } from "react";
 
 type SortContextType = {
-  sortBy: "date" | "priority";
-  setSortBy: (criteria: "date" | "priority") => void;
+  sortBy: "updateDate " | "priority";
+  setSortBy: (criteria: "updateDate " | "priority") => void;
 };
 
 const SortContext = createContext<SortContextType | undefined>(undefined);
@@ -11,8 +11,7 @@ const SortContext = createContext<SortContextType | undefined>(undefined);
 export const SortProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [sortBy, setSortBy] = useState<"date" | "priority">("priority");
-
+  const [sortBy, setSortBy] = useState<"updateDate " | "priority">("priority");
   return (
     <SortContext.Provider value={{ sortBy, setSortBy }}>
       {children}

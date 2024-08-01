@@ -3,13 +3,15 @@ import { useAppDispatch } from "../../hook";
 import { addTodo, fetchTodos } from "../../store/todos/todoOperations";
 import { useModal } from "../../context/ModalContext/ModalContext";
 import { useSort } from "../../context/SortContext/SortContext";
+import Priority from "../Priority/Priority";
 
 const NewTodoForm: React.FC = () => {
   const { sortBy } = useSort();
+  console.log("console.log(sortBy);", sortBy);
   const dispatch = useAppDispatch();
   const [dataTitle, setDataTitle] = useState("");
-  const [priority, setPriority] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const [priority, setPriority] = useState(1);
   const { closeModal } = useModal();
   const data = {
     title: dataTitle,
@@ -20,15 +22,11 @@ const NewTodoForm: React.FC = () => {
       inputRef.current.focus();
     }
   }, []);
-
+  const handlePriorityChange = (newPriority: number) => {
+    setPriority(newPriority);
+  };
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (evt) => {
     setDataTitle(evt.target.value);
-  };
-
-  const handlePriorityChange: React.ChangeEventHandler<HTMLInputElement> = (
-    evt
-  ) => {
-    setPriority(evt.target.value);
   };
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (evt) => {
@@ -36,6 +34,7 @@ const NewTodoForm: React.FC = () => {
     try {
       await dispatch(addTodo(data));
       await dispatch(fetchTodos(sortBy)).unwrap();
+
       setDataTitle("");
       closeModal();
     } catch (error) {
@@ -68,48 +67,7 @@ const NewTodoForm: React.FC = () => {
         />
         <button type="submit">Add Todo</button>
       </div>
-      <div>
-        <div>
-          <label htmlFor="high">High!!!</label>
-          <input
-            name="priority"
-            value="0"
-            type="radio"
-            checked={priority === "0"}
-            onChange={handlePriorityChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="medium">Medium!!</label>
-          <input
-            name="priority"
-            value="1"
-            type="radio"
-            checked={priority === "1"}
-            onChange={handlePriorityChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="low">Low!</label>
-          <input
-            name="priority"
-            value="2"
-            type="radio"
-            checked={priority === "2"}
-            onChange={handlePriorityChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="none">None</label>
-          <input
-            name="priority"
-            value="3"
-            type="radio"
-            checked={priority === "3"}
-            onChange={handlePriorityChange}
-          />
-        </div>
-      </div>
+      <Priority onPriorityChange={handlePriorityChange} />
     </form>
   );
 };

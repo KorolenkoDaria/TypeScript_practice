@@ -4,36 +4,49 @@ import { FiSave } from "react-icons/fi";
 import { ITodo } from "../../types/data";
 import { useAppDispatch } from "../../hook";
 import { useState } from "react";
+import Priority from "../Priority/Priority";
+import { useSort } from "../../context/SortContext/SortContext";
 import {
   toggleStatus,
   deleteTodo,
   updateTodo,
+  fetchTodos,
 } from "../../store/todos/todoOperations";
 interface ITodoItem extends ITodo {
   _id: string;
   title: string;
   completed: boolean;
-  priority: string;
+  priority: number;
   updateDate: string;
 }
 
 const TodoItem: React.FC<ITodoItem> = (item) => {
   const dispatch = useAppDispatch();
-  const { _id, title, completed, priority, updateDate } = item;
+  const { sortBy } = useSort();
+  const { _id, title, completed, updateDate, priority: itemsPriority } = item;
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(title);
+  const [priority, setPriority] = useState<number>(itemsPriority);
+
+  const priorityMap: string[] = ["high", "medium", "low", "none"];
   const data = { id: _id, editTitle, priority };
 
   const handleEdit = () => {
     setIsEditing(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setIsEditing(false);
-
-    dispatch(updateTodo(data));
+    await dispatch(updateTodo(data));
+    /*    console.log("data===>>>", data); */
+    await dispatch(fetchTodos(sortBy)).unwrap();
+    /*  console.log("data", data); */
   };
 
+  const handleChangePriority = (newPriority: number) => {
+    setPriority(newPriority);
+    /* console.log("newPriority", newPriority); */
+  };
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditTitle(e.target.value);
   };
@@ -48,9 +61,10 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
   };
   const handleCancel = () => {
     setIsEditing(false);
+    setPriority(itemsPriority);
   };
   return (
-    <div>
+    <div style={{ marginBottom: "50px", border: "1px solid red" }}>
       <p>date added: {updateDate}</p>
       <input
         type="checkbox"
@@ -68,19 +82,25 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
         <>
           <input type="text" value={title} readOnly disabled />
           <div>
-            <p>priority: {priority}</p>
+            <p>priority: {priorityMap[priority]}</p>
           </div>
         </>
       )}
 
       {isEditing ? (
         <div>
-          <button onClick={handleSave}>
-            <FiSave />
-          </button>
-          <button onClick={handleCancel}>
-            <MdCancel />
-          </button>
+          <div>
+            <button onClick={handleSave}>
+              <FiSave />
+            </button>
+            <button onClick={handleCancel}>
+              <MdCancel />
+            </button>
+          </div>
+          <Priority
+            onPriorityChange={handleChangePriority}
+            selectedPriority={Number(priority)}
+          />
         </div>
       ) : (
         <button onClick={handleEdit}>

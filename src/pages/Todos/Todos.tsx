@@ -8,15 +8,15 @@ import ButtonsForSorting from "../../components/ButtonsForSorting/ButtonsForSort
 
 const Todos: React.FC = () => {
   const { isOpen } = useModal();
-  
+
   return (
     <>
       {/*   <NewTodoForm /> */}
       <SortProvider>
         <ButtonsForSorting />
         <TodoList />
+        {isOpen ? <AddTodoModal /> : <AddNewTask />}
       </SortProvider>
-      {isOpen ? <AddTodoModal /> : <AddNewTask />}
     </>
   );
 };

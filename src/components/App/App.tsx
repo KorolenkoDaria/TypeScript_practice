@@ -1,6 +1,5 @@
 import { useAppSelector } from "../../hook";
 import { Outlet, NavLink } from "react-router-dom";
-import AddTodoModal from "../AddTodoModal/AddTodoModal";
 
 const App: React.FC = () => {
   const isLogged = useAppSelector((state) => state.auth.isLoggedIn);
