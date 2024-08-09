@@ -67,3 +67,23 @@ export const logOut = createAsyncThunk<IUser, UserEmail, { rejectValue: string }
         return data;
     }
 );
+
+export const refresh = createAsyncThunk<IUser, string, { rejectValue: string }>(
+    'auth/refreshToken',
+    async function (refreshToken, { rejectWithValue }) {
+        console.log("refreshToken", refreshToken);
+        const response = await fetch(`${LOCAL_DB}/auth/refresh-token`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": 'application/json',
+            },
+            body: JSON.stringify({ refreshToken: refreshToken })
+        });
+        if (!response.ok) {
+            return rejectWithValue('Server Error!')
+        }
+        const data = await response.json();
+        return data;
+    }
+
+)

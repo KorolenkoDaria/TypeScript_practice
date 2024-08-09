@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { signUp, signIn, logOut } from "./authOperations";
+import { signUp, signIn, logOut, refresh } from "./authOperations";
 import type { RootState } from "../index";
 
 export const selectIsLoggedIn = (state: RootState): boolean => state.auth.isLoggedIn;
@@ -11,6 +11,7 @@ export type AuthState = {
     },
     avatarURL: string | null,
     token: string | null,
+    refreshToken: string | null,
     isRefreshing: boolean,
     isLoggedIn: boolean,
     loading: boolean,
@@ -26,6 +27,7 @@ const initialState: AuthState = {
     loading: false,
     error: null,
     token: null,
+    refreshToken: null,
     isRefreshing: false,
     isLoggedIn: false,
     avatarURL: null,
@@ -45,6 +47,9 @@ const authSlise = createSlice({
                 state.user.email = payload.email;
                 state.isLoggedIn = true;
                 localStorage.setItem('token', payload.token)
+                localStorage.setItem('refreshToken', payload.refreshToken)
+
+
             })
             .addCase(signIn.pending, (state) => {
                 state.loading = true
@@ -55,6 +60,7 @@ const authSlise = createSlice({
                 state.user.email = payload.email;
                 state.isLoggedIn = true;
                 localStorage.setItem('token', payload.token)
+                localStorage.setItem('refreshToken', payload.refreshToken)
             })
             .addCase(logOut.pending, (state) => {
                 state.loading = true
@@ -64,6 +70,16 @@ const authSlise = createSlice({
                 state.token = null;
                 state.isLoggedIn = false;
                 localStorage.setItem('token', payload.token)
+                localStorage.setItem('refreshToken', payload.refreshToken)
+            })
+            .addCase(refresh.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(refresh.fulfilled, (state, { payload }) => {
+                state.loading = false;
+                state.isLoggedIn = true;
+                localStorage.setItem('token', payload.token)
+                localStorage.setItem('refreshToken', payload.refreshToken)
             })
     },
     reducers: {
