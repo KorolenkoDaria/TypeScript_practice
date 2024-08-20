@@ -8,6 +8,7 @@ const UserMenu: React.FC = () => {
   const user = useAppSelector((store) => store.auth.user);
 
   const handleLogout = () => {
+    console.log(123);
     if (user.email) {
       dispatch(logOut({ email: user.email }));
     } else {

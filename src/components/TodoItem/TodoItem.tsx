@@ -23,13 +23,25 @@ interface ITodoItem extends ITodo {
 const TodoItem: React.FC<ITodoItem> = (item) => {
   const dispatch = useAppDispatch();
   const { sortBy } = useSort();
-  const { _id, title, completed, updateDate, priority: itemsPriority } = item;
+  const {
+    _id,
+    title,
+    completed,
+    updateDate: date,
+    priority: itemsPriority,
+  } = item;
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(title);
   const [priority, setPriority] = useState<number>(itemsPriority);
-
   const priorityMap: string[] = ["high", "medium", "low", "none"];
-  const data = { id: _id, editTitle, priority };
+  const updateDate = new Date()
+    .toLocaleDateString("en-GB", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+    .replace(/\//g, "-");
+  const data = { id: _id, editTitle, priority, updateDate };
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -65,7 +77,7 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
   };
   return (
     <div style={{ marginBottom: "50px", border: "1px solid red" }}>
-      <p>date added: {updateDate}</p>
+      <p>date added: {date}</p>
       <input
         type="checkbox"
         checked={completed}

@@ -78,6 +78,7 @@ const authSlise = createSlice({
             .addCase(refresh.fulfilled, (state, { payload }) => {
                 state.loading = false;
                 state.isLoggedIn = true;
+                state.user.email = payload.email;
                 localStorage.setItem('token', payload.token)
                 localStorage.setItem('refreshToken', payload.refreshToken)
             })
