@@ -1,18 +1,20 @@
 import { useAppSelector, useAppDispatch } from "../../hook";
 import { Outlet, NavLink } from "react-router-dom";
 import { useEffect } from "react";
-import { refresh } from "../../store/auth/authOperations";
+import { setupAxiosInterceptors } from "../../api/interceptors";
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const { isLoggedIn } = useAppSelector((state) => state.auth);
-
   const refreshToken = localStorage.getItem("refreshToken");
   useEffect(() => {
-    if (refreshToken) {
+    setupAxiosInterceptors(); // Настройка перехватчиков при загрузке приложения
+  }, []);
+  /*  useEffect(() => {
+    if (!isLoggedIn && refreshToken) {
       dispatch(refresh(refreshToken));
     }
-  }, [dispatch, refreshToken]);
+  }, [dispatch, refreshToken, isLoggedIn]); */
 
   return (
     <div>

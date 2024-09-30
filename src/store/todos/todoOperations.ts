@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ITodo } from "../../types/data";
 import axios from 'axios';
-import api from "../../helpers/interceptors";
+import { api } from "../../api/interceptors";
 
 /* const REMOTE_DB = "https://todos-backend-nestjs.onrender.com"; */
 axios.defaults.baseURL = "http://localhost:5000";
@@ -39,11 +39,10 @@ export const addTodo = createAsyncThunk<ITodo, TodoData, { rejectValue: string }
             updateDate
         }
         try {
-            const { data } = await api.post(`/todos`, {
+            const { data } = await api.post('/todos', todo, {
                 headers: {
                     "Content-Type": 'application/json',
                 },
-                body: JSON.stringify(todo)
             });
             return data;
         } catch (error) {
@@ -89,11 +88,10 @@ export const updateTodo = createAsyncThunk<ITodo, { id: string, editTitle: strin
     'todos/updateTodo',
     async function (updatedData, { rejectWithValue }) {
         try {
-            const { data } = await api.patch(`/todos/${updatedData.id}`, {
+            const { data } = await api.patch(`/todos/${updatedData.id}`, updatedData, {
                 headers: {
                     "Content-Type": 'application/json',
-                },
-                body: JSON.stringify(updatedData)
+                }
             });
             return data;
         } catch (error) {

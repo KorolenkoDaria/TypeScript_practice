@@ -18,7 +18,6 @@ export type AuthState = {
     error: string | null,
 };
 
-
 const initialState: AuthState = {
     user: {
         name: null,
@@ -33,59 +32,80 @@ const initialState: AuthState = {
     avatarURL: null,
 }
 
-const authSlise = createSlice({
+const authSlice = createSlice({
     name: "auth",
     initialState,
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(signUp.pending, (state) => {
-                state.loading = true
+                state.loading = true;
+                state.error = null;
             })
             .addCase(signUp.fulfilled, (state, { payload }) => {
                 state.loading = false;
                 state.token = payload.token;
+                state.refreshToken = payload.refreshToken;
                 state.user.email = payload.email;
                 state.isLoggedIn = true;
-                localStorage.setItem('token', payload.token)
-                localStorage.setItem('refreshToken', payload.refreshToken)
-
-
+                localStorage.setItem('token', payload.token);
+                localStorage.setItem('refreshToken', payload.refreshToken);
+            })
+            .addCase(signUp.rejected, (state, { error }) => {
+                state.loading = false;
+                state.error = error.message || 'Failed to sign up';
             })
             .addCase(signIn.pending, (state) => {
-                state.loading = true
+                state.loading = true;
+                state.error = null;
             })
             .addCase(signIn.fulfilled, (state, { payload }) => {
                 state.loading = false;
                 state.token = payload.token;
+                state.refreshToken = payload.refreshToken;
                 state.user.email = payload.email;
                 state.isLoggedIn = true;
-                localStorage.setItem('token', payload.token)
-                localStorage.setItem('refreshToken', payload.refreshToken)
+                localStorage.setItem('token', payload.token);
+                localStorage.setItem('refreshToken', payload.refreshToken);
+            })
+            .addCase(signIn.rejected, (state, { error }) => {
+                state.loading = false;
+                state.error = error.message || 'Failed to sign in';
             })
             .addCase(logOut.pending, (state) => {
-                state.loading = true
+                state.loading = true;
+                state.error = null;
             })
-            .addCase(logOut.fulfilled, (state, { payload }) => {
+            .addCase(logOut.fulfilled, (state) => {
                 state.loading = false;
                 state.token = null;
+                state.refreshToken = null;
                 state.isLoggedIn = false;
-                localStorage.setItem('token', payload.token)
-                localStorage.setItem('refreshToken', payload.refreshToken)
+                state.user = { name: null, email: null };
+                localStorage.removeItem('token');
+                localStorage.removeItem('refreshToken');
+            })
+            .addCase(logOut.rejected, (state, { error }) => {
+                state.loading = false;
+                state.error = error.message || 'Failed to log out';
             })
             .addCase(refresh.pending, (state) => {
                 state.loading = true;
+                state.error = null;
             })
             .addCase(refresh.fulfilled, (state, { payload }) => {
                 state.loading = false;
+                state.token = payload.token;
+                state.refreshToken = payload.refreshToken;
                 state.isLoggedIn = true;
-                state.user.email = payload.email;
-                localStorage.setItem('token', payload.token)
-                localStorage.setItem('refreshToken', payload.refreshToken)
+                localStorage.setItem('token', payload.token);
+                localStorage.setItem('refreshToken', payload.refreshToken);
             })
-    },
-    reducers: {
-
+            .addCase(refresh.rejected, (state, { error }) => {
+                state.loading = false;
+                state.error = error.message || 'Failed to refresh tokens';
+            });
     }
-})
+});
 
-export const authReducer = authSlise.reducer; 
+export const authReducer = authSlice.reducer;

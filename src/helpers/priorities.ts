@@ -1,3 +1,3 @@
 const priorities = ["high", "medium", "low", "none"];
 
-export default priorities
+export default priorities;

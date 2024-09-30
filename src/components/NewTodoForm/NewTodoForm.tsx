@@ -7,7 +7,6 @@ import Priority from "../Priority/Priority";
 
 const NewTodoForm: React.FC = () => {
   const { sortBy } = useSort();
-  console.log("console.log(sortBy);", sortBy);
   const dispatch = useAppDispatch();
   const [dataTitle, setDataTitle] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);

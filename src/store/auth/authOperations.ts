@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
+import { api } from "../../api/interceptors";
 import { IUser } from "../../types/data";
 
 /* const REMOTE_DB = "https://todos-backend-nestjs.onrender.com"; */
@@ -64,7 +65,6 @@ export const logOut = createAsyncThunk<IUser, UserEmail, { rejectValue: string }
 export const refresh = createAsyncThunk<IUser, string, { rejectValue: string }>(
     'auth/refreshToken',
     async function (refreshToken, { rejectWithValue }) {
-        console.log(refreshToken);
 
         try {
             const { data } = await axios.post(`auth/refresh-token`, { refreshToken }, {
@@ -72,6 +72,7 @@ export const refresh = createAsyncThunk<IUser, string, { rejectValue: string }>(
                     "Content-Type": 'application/json'
                 }
             });
+            console.log('data>>>', data);
             return data;
         } catch (error) {
             return rejectWithValue('Server Error!')

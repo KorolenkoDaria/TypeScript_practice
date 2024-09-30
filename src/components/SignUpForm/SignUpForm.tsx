@@ -1,5 +1,5 @@
-import { useAppDispatch } from "../../hook";
 import { signUp } from "../../store/auth/authOperations";
+import { useAppDispatch } from "../../hook";
 
 const SignUpForm: React.FC = () => {
   const dispatch = useAppDispatch();
