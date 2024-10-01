@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { signUp, signIn, logOut, refresh } from "./authOperations";
+import { signUp, signIn, logOut, refresh, fetchUser } from "./authOperations";
 import type { RootState } from "../index";
 
 export const selectIsLoggedIn = (state: RootState): boolean => state.auth.isLoggedIn;
@@ -104,7 +104,22 @@ const authSlice = createSlice({
             .addCase(refresh.rejected, (state, { error }) => {
                 state.loading = false;
                 state.error = error.message || 'Failed to refresh tokens';
-            });
+            })
+            .addCase(fetchUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchUser.fulfilled, (state, { payload }) => {
+                state.loading = false;
+                state.user.name = payload.name;
+                state.user.email = payload.email;
+                /*  state.avatarURL = payload.avatarURL; */
+                state.isLoggedIn = true;
+            })
+            .addCase(fetchUser.rejected, (state, { error }) => {
+                state.loading = false;
+                state.error = error.message || 'Failed to fetch user';
+            })
     }
 });
 

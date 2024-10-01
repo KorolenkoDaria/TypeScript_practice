@@ -1,20 +1,29 @@
 import { useAppSelector, useAppDispatch } from "../../hook";
+import { useSort } from "../../context/SortContext/SortContext";
 import { Outlet, NavLink } from "react-router-dom";
 import { useEffect } from "react";
 import { setupAxiosInterceptors } from "../../api/interceptors";
+import { fetchTodos } from "../../store/todos/todoOperations";
+import { fetchUser } from "../../store/auth/authOperations";
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
+  const { sortBy } = useSort();
   const { isLoggedIn } = useAppSelector((state) => state.auth);
-  const refreshToken = localStorage.getItem("refreshToken");
+
   useEffect(() => {
-    setupAxiosInterceptors(); // Настройка перехватчиков при загрузке приложения
-  }, []);
-  /*  useEffect(() => {
-    if (!isLoggedIn && refreshToken) {
-      dispatch(refresh(refreshToken));
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(fetchUser(token)); // Восстановление пользователя
     }
-  }, [dispatch, refreshToken, isLoggedIn]); */
+  }, [dispatch]);
+
+  useEffect(() => {
+    setupAxiosInterceptors(); // Настройка перехватчиков
+    if (isLoggedIn) {
+      dispatch(fetchTodos(sortBy)); // Загрузка данных только если пользователь авторизован
+    }
+  }, [dispatch, sortBy, isLoggedIn]);
 
   return (
     <div>

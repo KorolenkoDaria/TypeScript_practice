@@ -12,7 +12,6 @@ export const setupAxiosInterceptors = () => {
   // Перехватчик запросов
   api.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
-    const refreshToken = localStorage.getItem('refreshToken');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -24,21 +23,16 @@ export const setupAxiosInterceptors = () => {
     (response) => response,
     async (error) => {
       const originalRequest = error.config;
-      console.log("originalRequest 1111", originalRequest);
-      if (error.response?.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
+      if (error.response?.status === 401 /* && !originalRequest._retry */) {
+        /*    originalRequest._retry = true; */
         const refreshToken = localStorage.getItem('refreshToken');
         const token = localStorage.getItem('token');
         console.log('refreshToken from localStorage', refreshToken);
         console.log('token from localStorage', token);
         if (refreshToken) {
           try {
-            // Попытка обновить токен
+
             const newTokens = await store.dispatch(refresh(refreshToken));
-
-            /*  store.dispatch(setTokens(newTokens.payload));  */ // Сохраняем новые токены в Redux
-
-            // Обновляем заголовки и повторяем запрос
             if (typeof newTokens.payload === 'object' && newTokens.payload.token) {
               api.defaults.headers['Authorization'] = `Bearer ${newTokens.payload.token}`;
               originalRequest.headers.Authorization = `Bearer ${newTokens.payload.token}`;
@@ -50,7 +44,7 @@ export const setupAxiosInterceptors = () => {
             }
           } catch (refreshError) {
             const email = store.getState().auth.user.email;
-            console.log('email', email);
+
             console.error('Ошибка обновления токена', refreshError);
             if (email) {
               store.dispatch(logOut({ email })); // Вызываем диспатч для разлогинивания пользователя (передаем email));  // В случае ошибки обновления токена — разлогиниваем пользователя

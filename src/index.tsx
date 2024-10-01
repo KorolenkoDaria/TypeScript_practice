@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 import { ModalProvider } from "./context/index";
+import { SortProvider } from "./context/SortContext/SortContext";
 
 import App from "./components/App/App";
 import store from "./store/index";
@@ -18,7 +19,11 @@ const Todos = lazy(() => import("./pages/Todos/Todos"));
 const router = createBrowserRouter([
   {
     path: "/react_typescript_todo",
-    element: <App />,
+    element: (
+      <SortProvider>
+        <App />
+      </SortProvider>
+    ),
     children: [
       {
         index: true,

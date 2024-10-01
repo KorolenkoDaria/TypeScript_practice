@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
-import { api } from "../../api/interceptors";
 import { IUser } from "../../types/data";
 
 /* const REMOTE_DB = "https://todos-backend-nestjs.onrender.com"; */
@@ -72,10 +71,28 @@ export const refresh = createAsyncThunk<IUser, string, { rejectValue: string }>(
                     "Content-Type": 'application/json'
                 }
             });
-            console.log('data>>>', data);
             return data;
         } catch (error) {
             return rejectWithValue('Server Error!')
+        }
+    }
+);
+
+
+export const fetchUser = createAsyncThunk<IUser, string, { rejectValue: string }>(
+    'auth/fetchUser',
+    async function (token, { rejectWithValue }) {
+        try {
+            console.log('token', token);
+            const { data } = await axios.get(`/auth/fetch-user`, {
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+            });
+            console.log('data', data);
+            return data;
+        } catch (error) {
+            return rejectWithValue('Failed to fetch user');
         }
     }
 );
