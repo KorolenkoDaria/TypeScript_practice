@@ -52,10 +52,17 @@ const todoSlice = createSlice({
             .addCase(deleteTodo.fulfilled, (state, action) => {
                 state.todos = state.todos.filter((todo) => todo._id !== action.payload._id)
             })
-            .addCase(updateTodo.fulfilled, (state, action) => {
-                const index = state.todos.findIndex((todo) => todo._id === action.payload._id);
+            .addCase(updateTodo.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateTodo.fulfilled, (state, { payload }) => {
+                state.loading = false;
+                const index = state.todos.findIndex((todo) => todo._id === payload._id);
                 if (index !== -1) {
-                    state.todos[index] = action.payload;
+                    state.todos[index].title = payload.title;
+                    state.todos[index].priority = payload.priority;
+                    state.todos[index].updateDate = payload.updateDate;
                 }
             })
     },

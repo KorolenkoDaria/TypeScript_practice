@@ -84,11 +84,13 @@ export const deleteTodo = createAsyncThunk<ITodo, string, { rejectValue: string 
     }
 );
 
-export const updateTodo = createAsyncThunk<ITodo, { id: string, editTitle: string, priority: number, updateDate: string }, { rejectValue: string }>(
+export const updateTodo = createAsyncThunk<ITodo, { id: string, editTitle: string, priority: number }, { rejectValue: string }>(
     'todos/updateTodo',
     async function (updatedData, { rejectWithValue }) {
         try {
-            const { data } = await api.patch(`/todos/${updatedData.id}`, updatedData, {
+            const updateDate = new Date().toISOString()
+            const { id, editTitle, priority } = updatedData
+            const { data } = await api.patch(`/todos/${id}`, { editTitle, priority, updateDate }, {
                 headers: {
                     "Content-Type": 'application/json',
                 }

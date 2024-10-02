@@ -83,13 +83,11 @@ export const fetchUser = createAsyncThunk<IUser, string, { rejectValue: string }
     'auth/fetchUser',
     async function (token, { rejectWithValue }) {
         try {
-            console.log('token', token);
             const { data } = await axios.get(`/auth/fetch-user`, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                 },
             });
-            console.log('data', data);
             return data;
         } catch (error) {
             return rejectWithValue('Failed to fetch user');

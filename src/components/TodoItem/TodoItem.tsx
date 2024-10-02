@@ -17,6 +17,7 @@ interface ITodoItem extends ITodo {
   title: string;
   completed: boolean;
   priority: number;
+  addDate: string;
   updateDate: string;
 }
 
@@ -27,37 +28,28 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
     _id,
     title,
     completed,
-    updateDate: date,
+    updateDate,
     priority: itemsPriority,
+    addDate,
   } = item;
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(title);
   const [priority, setPriority] = useState<number>(itemsPriority);
   const priorityMap: string[] = ["high", "medium", "low", "none"];
-  const updateDate = new Date()
-    .toLocaleDateString("en-GB", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    })
-    .replace(/\//g, "-");
-  const data = { id: _id, editTitle, priority, updateDate };
 
   const handleEdit = () => {
     setIsEditing(true);
   };
 
   const handleSave = async () => {
+    await dispatch(updateTodo({ id: _id, editTitle, priority }));
     setIsEditing(false);
-    await dispatch(updateTodo(data));
-    /*    console.log("data===>>>", data); */
-    await dispatch(fetchTodos(sortBy)).unwrap();
-    /*  console.log("data", data); */
+    setEditTitle(title);
+    /*   await dispatch(fetchTodos(sortBy)).unwrap(); */
   };
 
   const handleChangePriority = (newPriority: number) => {
     setPriority(newPriority);
-    /* console.log("newPriority", newPriority); */
   };
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditTitle(e.target.value);
@@ -67,17 +59,19 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
     evt
   ) => {
     if (evt.key === "Enter") {
+      dispatch(updateTodo({ id: _id, editTitle, priority }));
+      setEditTitle(title);
       setIsEditing(false);
-      dispatch(updateTodo(data));
     }
   };
   const handleCancel = () => {
     setIsEditing(false);
-    setPriority(itemsPriority);
+    /*     setPriority(itemsPriority); */
   };
   return (
     <div style={{ marginBottom: "50px", border: "1px solid red" }}>
-      <p>date added: {date}</p>
+      <p>added: {addDate}</p>
+      <p>updated: {updateDate}</p>
       <input
         type="checkbox"
         checked={completed}
@@ -85,6 +79,7 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
       />
       {isEditing ? (
         <input
+          style={{ width: "800px", height: "50px" }}
           type="text"
           value={editTitle}
           onChange={handleChangeTitle}
@@ -92,7 +87,13 @@ const TodoItem: React.FC<ITodoItem> = (item) => {
         />
       ) : (
         <>
-          <input type="text" value={title} readOnly disabled />
+          <input
+            style={{ width: "800px", height: "50px" }}
+            type="text"
+            value={title}
+            readOnly
+            disabled
+          />
           <div>
             <p>priority: {priorityMap[priority]}</p>
           </div>

@@ -3,7 +3,8 @@ export interface ITodo {
     title: string;
     completed: boolean;
     priority: number;
-    updateDate: string
+    updateDate: string;
+    addDate: string;
 }
 
 export interface IUser {
