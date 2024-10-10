@@ -6,6 +6,8 @@ import { Provider } from "react-redux";
 import { ModalProvider } from "./context/index";
 import { SortProvider } from "./context/SortContext/SortContext";
 
+import "./index.css";
+
 import App from "./components/App/App";
 import store from "./store/index";
 import RestrictedRoute from "./components/RestrictedRoute";

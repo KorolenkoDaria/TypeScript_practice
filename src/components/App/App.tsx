@@ -1,10 +1,11 @@
 import { useAppSelector, useAppDispatch } from "../../hook";
 import { useSort } from "../../context/SortContext/SortContext";
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useEffect } from "react";
 import { setupAxiosInterceptors } from "../../api/interceptors";
 import { fetchTodos } from "../../store/todos/todoOperations";
 import { fetchUser } from "../../store/auth/authOperations";
+import Header from "../Header";
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -26,37 +27,12 @@ const App: React.FC = () => {
   }, [dispatch, sortBy, isLoggedIn]);
 
   return (
-    <div>
-      <header>
-        <nav>
-          <ul>
-            <li>
-              <NavLink to="/react_typescript_todo/">Home</NavLink>
-            </li>
-            {!isLoggedIn && (
-              <>
-                <li>
-                  <NavLink to="/react_typescript_todo/signup">Sign Up</NavLink>
-                </li>
-                <li>
-                  <NavLink to="/react_typescript_todo/signin">Sign In</NavLink>
-                </li>
-              </>
-            )}
-            {isLoggedIn && (
-              <li>
-                <NavLink to="/react_typescript_todo/todos">Todos</NavLink>
-              </li>
-            )}
-          </ul>
-        </nav>
-      </header>
+    <div className="w-2/3 mx-auto">
+      <Header />
       <main>
         <Outlet />
       </main>
-      <footer>
-        <p>Footer content</p>
-      </footer>
+      <footer>{/*    <p>Footer content</p> */}</footer>
     </div>
   );
 };
