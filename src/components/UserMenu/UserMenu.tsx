@@ -17,9 +17,13 @@ const UserMenu: React.FC = () => {
   };
 
   return (
-    <div>
-      <p>{user.email}</p>
-      <button type="button" onClick={handleLogout}>
+    <div className="flex gap-8  ">
+      <p className="text-rose-500">{user.email}</p>
+      <button
+        className="cursor-pointer text-slate-500 hover:text-blue-500"
+        type="button"
+        onClick={handleLogout}
+      >
         Logout
       </button>
     </div>

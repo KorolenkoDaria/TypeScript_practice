@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useAppSelector } from "../hook";
+import UserMenu from "./UserMenu/UserMenu";
 
 const Header: React.FC = () => {
   const { isLoggedIn } = useAppSelector((state) => state.auth);
@@ -37,9 +38,19 @@ const Header: React.FC = () => {
             </>
           )}
           {isLoggedIn && (
-            <li>
-              <NavLink to="/react_typescript_todo/todos">Todos</NavLink>
-            </li>
+            <>
+              <li>
+                <NavLink
+                  to="/react_typescript_todo/todos"
+                  className=" cursor-pointer text-slate-500 hover:text-blue-500"
+                >
+                  Todos
+                </NavLink>
+              </li>
+              <li className="ml-auto">
+                <UserMenu />
+              </li>
+            </>
           )}
         </ul>
       </nav>
